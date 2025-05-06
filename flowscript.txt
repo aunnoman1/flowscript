@@ -1,0 +1,48 @@
+Proposal: "FlowScript" - A Pipeline-Oriented Language
+
+1. Project Title
+FlowScript: A Programming Language for Simplified Data Processing Pipelines
+
+2. Category
+Category 1: Design a Novel Programming Language
+
+3. Introduction / Motivation
+Many programming tasks involve processing data through a sequence of steps: read, transform, filter, aggregate, write. While functional programming concepts and libraries in existing languages address this, the syntax can often become nested or require boilerplate setup. Flow Script aims to make defining such sequential data operations the primary mode of expression in the language, using a visually intuitive pipeline metaphor, thereby minimizing code for common data manipulation tasks. The goal is to create a language that feels natural for defining workflows.
+
+4. Language Concept
+FlowScript is designed around the concept of data flowing through functions. The core syntax uses a pipe operator (e.g., |>) to chain operations. Functions implicitly operate on the data passed to them.
+
+
+
+• Basic Syntax Ideas:
+o Assignment: myVar = 10
+
+
+
+
+o Pipelining / Function Call:
+5 |> double() // Result is 10. The '5' is implicitly the first arg.
+10 |> add(3) // Result is 13. '10' is the first arg 'a', '3' is 'b'.
+
+
+o If-Else (Standalone):
+7 |> if > 5 { double() } else { add(1) } // returns 14
+
+
+o For Loop:
+range(1, 5) |> for each { double() |> print() } // Prints 2, 4, 6, 8
+
+
+o Operators: Standard arithmetic (+, -, *, /), boolean (and, or, not), comparison (==, !=, <, >), assignment (=).
+
+5. Implementation Plan
+• Core Goal: Implement an compiler for FlowScript capable of executing scripts with basic arithmetic/boolean operations, variable assignments, function definitions/calls (including the pipeline syntax |>), if-else statements, and for loops.
+
+6. Scope
+Lexer, Parser, compiler for basic features (variables, arithmetic/boolean/comparison/assignment operators, function definition/call, |> pipeline operator, if/else, for loops).
+
+7. Novelty Statement
+FlowScript is distinct from mainstream languages like Python, Java, or C++ by making the data pipeline (|>) a primary syntactic construct for function invocation and flow control, aiming to significantly reduce the code needed for sequential data processing tasks compared to standard function calls or method chaining. While inspired by functional concepts and shell pipes, its integration into the core syntax for general control flow is its novel aspect within the scope of this project.
+
+8. Conclusion
+This project will demonstrate the feasibility of FlowScript, a novel language concept focused on simplifying data workflow expression. The implementation will cover the essential programming constructs required, providing a foundation for understanding its potential benefits in code clarity and conciseness for specific task types.

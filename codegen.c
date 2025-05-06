@@ -495,8 +495,26 @@ static void codegen_statement(ASTNode* stmt_node) {
                 ASTNode* actual_stmt_in_body = current_stmt_list_item->data.statements.current_statement;
                 if (actual_stmt_in_body) {
                     if (actual_stmt_in_body->type == NODE_EXPRESSION_STATEMENT) {
-                        fprintf(stderr, "[DEBUG] FOR_STMT Body: Codegen Expression_Statement with piped loop_val %p\n", (void*)current_loop_val_for_body);
-                        codegen_expression(actual_stmt_in_body->data.expression_statement.expression, current_loop_val_for_body);
+                        ASTNode* inner_expr_for_loop_body = actual_stmt_in_body->data.expression_statement.expression;
+                        if (inner_expr_for_loop_body && // Check if inner_expr_for_loop_body is not NULL
+                            inner_expr_for_loop_body->type == NODE_PRINT && 
+                            !inner_expr_for_loop_body->data.print_stmt.is_implicit_pipe &&
+                            inner_expr_for_loop_body->data.print_stmt.expr_to_print) {
+                            
+                            fprintf(stderr, "[DEBUG] FOR_STMT Body: Handling explicit print(ARG) statement.\n");
+                            LLVMValueRef val_to_print = codegen_expression(inner_expr_for_loop_body->data.print_stmt.expr_to_print, NULL);
+                            if (val_to_print) {
+                                LLVMValueRef args[] = { int_format_str, val_to_print };
+                                LLVMBuildCall2(llvm_builder, stored_printf_func_type, printf_func, args, 2, "printfcall_loop_explicit");
+                            } else {
+                                fprintf(stderr, "Codegen Error: Expression for explicit print in loop yielded NULL.\n");
+                            }
+                        } else if (inner_expr_for_loop_body) { // Check if inner_expr_for_loop_body is not NULL before accessing its type
+                            fprintf(stderr, "[DEBUG] FOR_STMT Body: Codegen Expression_Statement (type %d) with piped loop_val %p\n", inner_expr_for_loop_body->type, (void*)current_loop_val_for_body);
+                            codegen_expression(inner_expr_for_loop_body, current_loop_val_for_body);
+                        } else {
+                             fprintf(stderr, "[DEBUG] FOR_STMT Body: Encountered NULL inner expression in Expression_Statement.\n");
+                        }
                     } else {
                         // For other types of statements, they don't automatically get the loop variable piped.
                         fprintf(stderr, "[DEBUG] FOR_STMT Body: Codegen non-Expression_Statement (type %d)\n", actual_stmt_in_body->type);

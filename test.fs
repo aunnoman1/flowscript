@@ -5,17 +5,35 @@ myVar = 10
 
 range(1, 3) |> for each { double() |> print() } // Expected: 2, then 4
 
-if myVar > 5 {
-  print(1)                     // Expected: 1
+// --- Additional For Loop Tests ---
+0 |> print() // Separator print
+
+startRange = 2
+endRange = 5 // Loop for 2, 3, 4
+range(startRange, endRange) |> for each { double() |> print() } 
+// Expected output: 4, 6, 8
+
+0 |> print() // Separator print
+
+range(5, 5) |> for each { 999 |> print() } // Should print nothing from the loop
+
+0 |> print() // Separator print
+
+// Reuse startRange = 2, endRange = 5 from above
+range(startRange, endRange) |> for each { add(10) |> print() }
+// Expected output: (2+10)=12, (3+10)=13, (4+10)=14
+// --- End Additional For Loop Tests ---
+
+myVar |> if > 5 {
+  1 |> print()                     // Expected: 1
 } else {
-  print(0)
+  0 |> print()                     // Expected: 0
 }
 
-// Test piped if
 3 |> if > 5 {
-  print(100)                   // Expected: 100
+  100 |> print()                                  
 } else {
-  print(200)
+  200 |> print()                   // Expected: 200
 }
 
 // Test a slightly longer chain

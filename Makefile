@@ -78,6 +78,36 @@ lex.yy.o: lex.yy.c flowscript.tab.h ast.h
 flowscript.tab.o: flowscript.tab.c flowscript.tab.h ast.h codegen.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
+# --- Targets for compiling and running FlowScript test file ---
+TEST_FS_FILE ?= test.fs
+GENERATED_LL_FILE = output.ll
+TEST_FS_EXECUTABLE = test_fs_executable
+
+# Target to compile the .ll file to an executable
+$(TEST_FS_EXECUTABLE): $(GENERATED_LL_FILE)
+	@echo "Compiling $(GENERATED_LL_FILE) to $(TEST_FS_EXECUTABLE) using clang..."
+	clang $(GENERATED_LL_FILE) -o $(TEST_FS_EXECUTABLE)
+	@echo "$(TEST_FS_EXECUTABLE) created."
+
+# Target to generate output.ll by running the flowscript_compiler
+$(GENERATED_LL_FILE): $(TARGET) $(TEST_FS_FILE)
+	@echo "Generating $(GENERATED_LL_FILE) from $(TEST_FS_FILE) using ./$(TARGET)..."
+	./$(TARGET) < $(TEST_FS_FILE) > /dev/null 2>&1 # Suppress compiler's own stdout/stderr for this step
+	@echo "$(GENERATED_LL_FILE) generated."
+
+# Target to build the compiler, then generate .ll, then compile .ll to executable
+build_test_executable: $(TEST_FS_EXECUTABLE)
+
+# Target to do all of the above and then run the test executable
+run_test: build_test_executable
+	@echo "Running $(TEST_FS_EXECUTABLE)..."
+	./$(TEST_FS_EXECUTABLE) | cat
+	@echo "Test run complete."
+
+# Add these to .PHONY if they don't represent actual files consistently
+.PHONY: build_test_executable run_test
+
 # Clean rule: remove generated files
 clean:
-	rm -f $(TARGET) $(OBJECTS) lex.yy.c flowscript.tab.c flowscript.tab.h output.ll *.core 
+	rm -f $(TARGET) $(OBJECTS) lex.yy.c flowscript.tab.c flowscript.tab.h \
+	$(GENERATED_LL_FILE) $(TEST_FS_EXECUTABLE) output.o *.core 

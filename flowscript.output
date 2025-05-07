@@ -1,0 +1,1779 @@
+Terminals unused in grammar
+
+    STRING_LITERAL
+
+
+State 0 conflicts: 1 reduce/reduce
+State 2 conflicts: 1 shift/reduce
+State 20 conflicts: 1 shift/reduce
+State 32 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: top_level_list
+    2        | ε
+
+    3 top_level_list: ε
+    4               | top_level_item top_level_list
+
+    5 top_level_item: statement
+    6               | function_definition
+
+    7 statement: assignment_statement
+    8          | pipeline_statement
+    9          | expression_statement
+   10          | if_statement
+   11          | for_statement
+   12          | return_statement
+   13          | SEMICOLON
+
+   14 assignment_statement: IDENTIFIER ASSIGN expression SEMICOLON
+
+   15 pipeline_statement: expression SEMICOLON
+
+   16 expression_statement: expression
+
+   17 expression: term
+   18           | expression PLUS term
+   19           | expression MINUS term
+   20           | expression MULTIPLY term
+   21           | expression DIVIDE term
+   22           | expression EQ term
+   23           | expression NEQ term
+   24           | expression LT term
+   25           | expression GT term
+   26           | expression AND_OP term
+   27           | expression OR_OP term
+   28           | NOT expression
+   29           | expression PIPE function_call_like
+
+   30 term: factor
+
+   31 factor: NUMBER
+   32       | IDENTIFIER
+   33       | LPAREN expression RPAREN
+   34       | function_call_like
+
+   35 function_call_like: IDENTIFIER LPAREN opt_arg_list RPAREN
+   36                   | BUILTIN_DOUBLE LPAREN RPAREN
+   37                   | BUILTIN_ADD LPAREN expression RPAREN
+   38                   | PRINT LPAREN expression RPAREN
+   39                   | PRINT LPAREN RPAREN
+
+   40 opt_arg_list: ε
+   41             | arg_list
+
+   42 arg_list: expression
+   43         | expression COMMA arg_list
+
+   44 statements_block: ε
+   45                 | statement statements_block
+
+   46 if_statement: IF expression LBRACE statements_block RBRACE opt_else_clause
+
+   47 opt_else_clause: ε
+   48                | ELSE LBRACE statements_block RBRACE
+
+   49 for_statement: range_expression PIPE FOR EACH LBRACE statements_block RBRACE SEMICOLON
+
+   50 range_expression: RANGE_KEYWORD LPAREN expression COMMA expression RPAREN
+
+   51 function_definition: FUNC IDENTIFIER LPAREN opt_parameter_list RPAREN LBRACE statements_block RBRACE
+
+   52 opt_parameter_list: ε
+   53                   | parameter_list
+
+   54 parameter_list: formal_param
+   55               | formal_param COMMA parameter_list
+
+   56 formal_param: IDENTIFIER
+
+   57 return_statement: RETURN expression SEMICOLON
+   58                 | RETURN SEMICOLON
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    NUMBER <ival> (258) 31
+    IDENTIFIER <sval> (259) 14 32 35 51 56
+    STRING_LITERAL <sval> (260)
+    FUNC (261) 51
+    RETURN (262) 57 58
+    IF (263) 46
+    ELSE (264) 48
+    FOR (265) 49
+    EACH (266) 49
+    RANGE_KEYWORD (267) 50
+    PRINT (268) 38 39
+    ASSIGN (269) 14
+    PIPE (270) 29 49
+    PLUS (271) 18
+    MINUS (272) 19
+    MULTIPLY (273) 20
+    DIVIDE (274) 21
+    EQ (275) 22
+    NEQ (276) 23
+    LT (277) 24
+    GT (278) 25
+    AND_OP (279) 26
+    OR_OP (280) 27
+    NOT (281) 28
+    LPAREN (282) 33 35 36 37 38 39 50 51
+    RPAREN (283) 33 35 36 37 38 39 50 51
+    LBRACE (284) 46 48 49 51
+    RBRACE (285) 46 48 49 51
+    COMMA (286) 43 50 55
+    SEMICOLON (287) 13 14 15 49 57 58
+    BUILTIN_DOUBLE (288) 36
+    BUILTIN_ADD (289) 37
+
+
+Nonterminals, with rules where they appear
+
+    $accept (35)
+        on left: 0
+    program <node> (36)
+        on left: 1 2
+        on right: 0
+    top_level_list <node> (37)
+        on left: 3 4
+        on right: 1 4
+    top_level_item <node> (38)
+        on left: 5 6
+        on right: 4
+    statement <node> (39)
+        on left: 7 8 9 10 11 12 13
+        on right: 5 45
+    assignment_statement <node> (40)
+        on left: 14
+        on right: 7
+    pipeline_statement <node> (41)
+        on left: 15
+        on right: 8
+    expression_statement <node> (42)
+        on left: 16
+        on right: 9
+    expression <node> (43)
+        on left: 17 18 19 20 21 22 23 24 25 26 27 28 29
+        on right: 14 15 16 18 19 20 21 22 23 24 25 26 27 28 29 33 37 38 42 43 46 50 57
+    term <node> (44)
+        on left: 30
+        on right: 17 18 19 20 21 22 23 24 25 26 27
+    factor <node> (45)
+        on left: 31 32 33 34
+        on right: 30
+    function_call_like <node> (46)
+        on left: 35 36 37 38 39
+        on right: 29 34
+    opt_arg_list <node> (47)
+        on left: 40 41
+        on right: 35
+    arg_list <node> (48)
+        on left: 42 43
+        on right: 41 43
+    statements_block <node> (49)
+        on left: 44 45
+        on right: 45 46 48 49 51
+    if_statement <node> (50)
+        on left: 46
+        on right: 10
+    opt_else_clause <node> (51)
+        on left: 47 48
+        on right: 46
+    for_statement <node> (52)
+        on left: 49
+        on right: 11
+    range_expression <node> (53)
+        on left: 50
+        on right: 49
+    function_definition <node> (54)
+        on left: 51
+        on right: 6
+    opt_parameter_list <node> (55)
+        on left: 52 53
+        on right: 51
+    parameter_list <node> (56)
+        on left: 54 55
+        on right: 53 55
+    formal_param <node> (57)
+        on left: 56
+        on right: 54 55
+    return_statement <node> (58)
+        on left: 57 58
+        on right: 12
+
+
+State 0
+
+    0 $accept: • program $end
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 2
+    FUNC            shift, and go to state 3
+    RETURN          shift, and go to state 4
+    IF              shift, and go to state 5
+    RANGE_KEYWORD   shift, and go to state 6
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    SEMICOLON       shift, and go to state 10
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    $end      reduce using rule 2 (program)
+    $end      [reduce using rule 3 (top_level_list)]
+    $default  reduce using rule 2 (program)
+
+    program               go to state 13
+    top_level_list        go to state 14
+    top_level_item        go to state 15
+    statement             go to state 16
+    assignment_statement  go to state 17
+    pipeline_statement    go to state 18
+    expression_statement  go to state 19
+    expression            go to state 20
+    term                  go to state 21
+    factor                go to state 22
+    function_call_like    go to state 23
+    if_statement          go to state 24
+    for_statement         go to state 25
+    range_expression      go to state 26
+    function_definition   go to state 27
+    return_statement      go to state 28
+
+    reduce/reduce conflict on token $end:
+        2 program: ε •
+        3 top_level_list: ε •
+      Example: •
+      First reduce derivation
+        program
+        ↳ 2: ε •
+      Second reduce derivation
+        program
+        ↳ 1: top_level_list
+             ↳ 3: ε •
+
+
+
+State 1
+
+   31 factor: NUMBER •
+
+    $default  reduce using rule 31 (factor)
+
+
+State 2
+
+   14 assignment_statement: IDENTIFIER • ASSIGN expression SEMICOLON
+   32 factor: IDENTIFIER •
+   35 function_call_like: IDENTIFIER • LPAREN opt_arg_list RPAREN
+
+    ASSIGN  shift, and go to state 29
+    LPAREN  shift, and go to state 30
+
+    LPAREN    [reduce using rule 32 (factor)]
+    $default  reduce using rule 32 (factor)
+
+    shift/reduce conflict on token LPAREN:
+       32 factor: IDENTIFIER •
+       35 function_call_like: IDENTIFIER • LPAREN opt_arg_list RPAREN
+      First example: top_level_list
+      Shift derivation
+        top_level_list
+        ↳ 4: top_level_list
+      Second example: RPAREN top_level_list
+      Reduce derivation
+        top_level_list
+        ↳ 4: RPAREN top_level_list
+                    ↳ 4: top_level_item top_level_list
+                         ↳ 5: ε
+
+
+
+State 3
+
+   51 function_definition: FUNC • IDENTIFIER LPAREN opt_parameter_list RPAREN LBRACE statements_block RBRACE
+
+    IDENTIFIER  shift, and go to state 31
+
+
+State 4
+
+   57 return_statement: RETURN • expression SEMICOLON
+   58                 | RETURN • SEMICOLON
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    SEMICOLON       shift, and go to state 33
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    expression          go to state 34
+    term                go to state 21
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 5
+
+   46 if_statement: IF • expression LBRACE statements_block RBRACE opt_else_clause
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    expression          go to state 35
+    term                go to state 21
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 6
+
+   50 range_expression: RANGE_KEYWORD • LPAREN expression COMMA expression RPAREN
+
+    LPAREN  shift, and go to state 36
+
+
+State 7
+
+   38 function_call_like: PRINT • LPAREN expression RPAREN
+   39                   | PRINT • LPAREN RPAREN
+
+    LPAREN  shift, and go to state 37
+
+
+State 8
+
+   28 expression: NOT • expression
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    expression          go to state 38
+    term                go to state 21
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 9
+
+   33 factor: LPAREN • expression RPAREN
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    expression          go to state 39
+    term                go to state 21
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 10
+
+   13 statement: SEMICOLON •
+
+    $default  reduce using rule 13 (statement)
+
+
+State 11
+
+   36 function_call_like: BUILTIN_DOUBLE • LPAREN RPAREN
+
+    LPAREN  shift, and go to state 40
+
+
+State 12
+
+   37 function_call_like: BUILTIN_ADD • LPAREN expression RPAREN
+
+    LPAREN  shift, and go to state 41
+
+
+State 13
+
+    0 $accept: program • $end
+
+    $end  shift, and go to state 42
+
+
+State 14
+
+    1 program: top_level_list •
+
+    $default  reduce using rule 1 (program)
+
+
+State 15
+
+    4 top_level_list: top_level_item • top_level_list
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 2
+    FUNC            shift, and go to state 3
+    RETURN          shift, and go to state 4
+    IF              shift, and go to state 5
+    RANGE_KEYWORD   shift, and go to state 6
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    SEMICOLON       shift, and go to state 10
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    $default  reduce using rule 3 (top_level_list)
+
+    top_level_list        go to state 43
+    top_level_item        go to state 15
+    statement             go to state 16
+    assignment_statement  go to state 17
+    pipeline_statement    go to state 18
+    expression_statement  go to state 19
+    expression            go to state 20
+    term                  go to state 21
+    factor                go to state 22
+    function_call_like    go to state 23
+    if_statement          go to state 24
+    for_statement         go to state 25
+    range_expression      go to state 26
+    function_definition   go to state 27
+    return_statement      go to state 28
+
+
+State 16
+
+    5 top_level_item: statement •
+
+    $default  reduce using rule 5 (top_level_item)
+
+
+State 17
+
+    7 statement: assignment_statement •
+
+    $default  reduce using rule 7 (statement)
+
+
+State 18
+
+    8 statement: pipeline_statement •
+
+    $default  reduce using rule 8 (statement)
+
+
+State 19
+
+    9 statement: expression_statement •
+
+    $default  reduce using rule 9 (statement)
+
+
+State 20
+
+   15 pipeline_statement: expression • SEMICOLON
+   16 expression_statement: expression •
+   18 expression: expression • PLUS term
+   19           | expression • MINUS term
+   20           | expression • MULTIPLY term
+   21           | expression • DIVIDE term
+   22           | expression • EQ term
+   23           | expression • NEQ term
+   24           | expression • LT term
+   25           | expression • GT term
+   26           | expression • AND_OP term
+   27           | expression • OR_OP term
+   29           | expression • PIPE function_call_like
+
+    PIPE       shift, and go to state 44
+    PLUS       shift, and go to state 45
+    MINUS      shift, and go to state 46
+    MULTIPLY   shift, and go to state 47
+    DIVIDE     shift, and go to state 48
+    EQ         shift, and go to state 49
+    NEQ        shift, and go to state 50
+    LT         shift, and go to state 51
+    GT         shift, and go to state 52
+    AND_OP     shift, and go to state 53
+    OR_OP      shift, and go to state 54
+    SEMICOLON  shift, and go to state 55
+
+    SEMICOLON  [reduce using rule 16 (expression_statement)]
+    $default   reduce using rule 16 (expression_statement)
+
+    shift/reduce conflict on token SEMICOLON:
+       16 expression_statement: expression •
+       15 pipeline_statement: expression • SEMICOLON
+      Example: expression • SEMICOLON top_level_list
+      Shift derivation
+        top_level_list
+        ↳ 4: top_level_item                         top_level_list
+             ↳ 5: statement
+                  ↳ 8: pipeline_statement
+                       ↳ 15: expression • SEMICOLON
+      Reduce derivation
+        top_level_list
+        ↳ 4: top_level_item                 top_level_list
+             ↳ 5: statement                 ↳ 4: top_level_item       top_level_list
+                  ↳ 9: expression_statement      ↳ 5: statement
+                       ↳ 16: expression •             ↳ 13: SEMICOLON
+
+
+
+State 21
+
+   17 expression: term •
+
+    $default  reduce using rule 17 (expression)
+
+
+State 22
+
+   30 term: factor •
+
+    $default  reduce using rule 30 (term)
+
+
+State 23
+
+   34 factor: function_call_like •
+
+    $default  reduce using rule 34 (factor)
+
+
+State 24
+
+   10 statement: if_statement •
+
+    $default  reduce using rule 10 (statement)
+
+
+State 25
+
+   11 statement: for_statement •
+
+    $default  reduce using rule 11 (statement)
+
+
+State 26
+
+   49 for_statement: range_expression • PIPE FOR EACH LBRACE statements_block RBRACE SEMICOLON
+
+    PIPE  shift, and go to state 56
+
+
+State 27
+
+    6 top_level_item: function_definition •
+
+    $default  reduce using rule 6 (top_level_item)
+
+
+State 28
+
+   12 statement: return_statement •
+
+    $default  reduce using rule 12 (statement)
+
+
+State 29
+
+   14 assignment_statement: IDENTIFIER ASSIGN • expression SEMICOLON
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    expression          go to state 57
+    term                go to state 21
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 30
+
+   35 function_call_like: IDENTIFIER LPAREN • opt_arg_list RPAREN
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    $default  reduce using rule 40 (opt_arg_list)
+
+    expression          go to state 58
+    term                go to state 21
+    factor              go to state 22
+    function_call_like  go to state 23
+    opt_arg_list        go to state 59
+    arg_list            go to state 60
+
+
+State 31
+
+   51 function_definition: FUNC IDENTIFIER • LPAREN opt_parameter_list RPAREN LBRACE statements_block RBRACE
+
+    LPAREN  shift, and go to state 61
+
+
+State 32
+
+   32 factor: IDENTIFIER •
+   35 function_call_like: IDENTIFIER • LPAREN opt_arg_list RPAREN
+
+    LPAREN  shift, and go to state 30
+
+    LPAREN    [reduce using rule 32 (factor)]
+    $default  reduce using rule 32 (factor)
+
+    shift/reduce conflict on token LPAREN:
+       32 factor: IDENTIFIER •
+       35 function_call_like: IDENTIFIER • LPAREN opt_arg_list RPAREN
+      First example: expression PLUS IDENTIFIER • LPAREN opt_arg_list RPAREN top_level_list $end
+      Shift derivation
+        $accept
+        ↳ 0: program                                                                                                            $end
+             ↳ 1: top_level_list
+                  ↳ 4: top_level_item                                                                            top_level_list
+                       ↳ 5: statement
+                            ↳ 9: expression
+                                 ↳ 18: expression PLUS term
+                                                       ↳ 30: factor
+                                                             ↳ 34: function_call_like
+                                                                   ↳ 35: IDENTIFIER • LPAREN opt_arg_list RPAREN
+      Second example: expression PLUS IDENTIFIER • LPAREN expression RPAREN SEMICOLON top_level_list $end
+      Reduce derivation
+        $accept
+        ↳ 0: program                                                                                                                                                           $end
+             ↳ 1: top_level_list
+                  ↳ 4: top_level_item                                                 top_level_list
+                       ↳ 5: statement                                                 ↳ 4: top_level_item                                                       top_level_list
+                            ↳ 9: expression_statement                                      ↳ 5: statement
+                                 ↳ 16: expression                                               ↳ 8: pipeline_statement
+                                       ↳ 18: expression PLUS term                                    ↳ 15: expression                                 SEMICOLON
+                                                             ↳ 30: factor                                  ↳ 17: term
+                                                                   ↳ 32: IDENTIFIER •                            ↳ 30: factor
+                                                                                                                       ↳ 33: LPAREN expression RPAREN
+
+
+
+State 33
+
+   58 return_statement: RETURN SEMICOLON •
+
+    $default  reduce using rule 58 (return_statement)
+
+
+State 34
+
+   18 expression: expression • PLUS term
+   19           | expression • MINUS term
+   20           | expression • MULTIPLY term
+   21           | expression • DIVIDE term
+   22           | expression • EQ term
+   23           | expression • NEQ term
+   24           | expression • LT term
+   25           | expression • GT term
+   26           | expression • AND_OP term
+   27           | expression • OR_OP term
+   29           | expression • PIPE function_call_like
+   57 return_statement: RETURN expression • SEMICOLON
+
+    PIPE       shift, and go to state 44
+    PLUS       shift, and go to state 45
+    MINUS      shift, and go to state 46
+    MULTIPLY   shift, and go to state 47
+    DIVIDE     shift, and go to state 48
+    EQ         shift, and go to state 49
+    NEQ        shift, and go to state 50
+    LT         shift, and go to state 51
+    GT         shift, and go to state 52
+    AND_OP     shift, and go to state 53
+    OR_OP      shift, and go to state 54
+    SEMICOLON  shift, and go to state 62
+
+
+State 35
+
+   18 expression: expression • PLUS term
+   19           | expression • MINUS term
+   20           | expression • MULTIPLY term
+   21           | expression • DIVIDE term
+   22           | expression • EQ term
+   23           | expression • NEQ term
+   24           | expression • LT term
+   25           | expression • GT term
+   26           | expression • AND_OP term
+   27           | expression • OR_OP term
+   29           | expression • PIPE function_call_like
+   46 if_statement: IF expression • LBRACE statements_block RBRACE opt_else_clause
+
+    PIPE      shift, and go to state 44
+    PLUS      shift, and go to state 45
+    MINUS     shift, and go to state 46
+    MULTIPLY  shift, and go to state 47
+    DIVIDE    shift, and go to state 48
+    EQ        shift, and go to state 49
+    NEQ       shift, and go to state 50
+    LT        shift, and go to state 51
+    GT        shift, and go to state 52
+    AND_OP    shift, and go to state 53
+    OR_OP     shift, and go to state 54
+    LBRACE    shift, and go to state 63
+
+
+State 36
+
+   50 range_expression: RANGE_KEYWORD LPAREN • expression COMMA expression RPAREN
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    expression          go to state 64
+    term                go to state 21
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 37
+
+   38 function_call_like: PRINT LPAREN • expression RPAREN
+   39                   | PRINT LPAREN • RPAREN
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    RPAREN          shift, and go to state 65
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    expression          go to state 66
+    term                go to state 21
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 38
+
+   18 expression: expression • PLUS term
+   19           | expression • MINUS term
+   20           | expression • MULTIPLY term
+   21           | expression • DIVIDE term
+   22           | expression • EQ term
+   23           | expression • NEQ term
+   24           | expression • LT term
+   25           | expression • GT term
+   26           | expression • AND_OP term
+   27           | expression • OR_OP term
+   28           | NOT expression •
+   29           | expression • PIPE function_call_like
+
+    PIPE  shift, and go to state 44
+
+    $default  reduce using rule 28 (expression)
+
+
+State 39
+
+   18 expression: expression • PLUS term
+   19           | expression • MINUS term
+   20           | expression • MULTIPLY term
+   21           | expression • DIVIDE term
+   22           | expression • EQ term
+   23           | expression • NEQ term
+   24           | expression • LT term
+   25           | expression • GT term
+   26           | expression • AND_OP term
+   27           | expression • OR_OP term
+   29           | expression • PIPE function_call_like
+   33 factor: LPAREN expression • RPAREN
+
+    PIPE      shift, and go to state 44
+    PLUS      shift, and go to state 45
+    MINUS     shift, and go to state 46
+    MULTIPLY  shift, and go to state 47
+    DIVIDE    shift, and go to state 48
+    EQ        shift, and go to state 49
+    NEQ       shift, and go to state 50
+    LT        shift, and go to state 51
+    GT        shift, and go to state 52
+    AND_OP    shift, and go to state 53
+    OR_OP     shift, and go to state 54
+    RPAREN    shift, and go to state 67
+
+
+State 40
+
+   36 function_call_like: BUILTIN_DOUBLE LPAREN • RPAREN
+
+    RPAREN  shift, and go to state 68
+
+
+State 41
+
+   37 function_call_like: BUILTIN_ADD LPAREN • expression RPAREN
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    expression          go to state 69
+    term                go to state 21
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 42
+
+    0 $accept: program $end •
+
+    $default  accept
+
+
+State 43
+
+    4 top_level_list: top_level_item top_level_list •
+
+    $default  reduce using rule 4 (top_level_list)
+
+
+State 44
+
+   29 expression: expression PIPE • function_call_like
+
+    IDENTIFIER      shift, and go to state 70
+    PRINT           shift, and go to state 7
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    function_call_like  go to state 71
+
+
+State 45
+
+   18 expression: expression PLUS • term
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    term                go to state 72
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 46
+
+   19 expression: expression MINUS • term
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    term                go to state 73
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 47
+
+   20 expression: expression MULTIPLY • term
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    term                go to state 74
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 48
+
+   21 expression: expression DIVIDE • term
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    term                go to state 75
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 49
+
+   22 expression: expression EQ • term
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    term                go to state 76
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 50
+
+   23 expression: expression NEQ • term
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    term                go to state 77
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 51
+
+   24 expression: expression LT • term
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    term                go to state 78
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 52
+
+   25 expression: expression GT • term
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    term                go to state 79
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 53
+
+   26 expression: expression AND_OP • term
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    term                go to state 80
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 54
+
+   27 expression: expression OR_OP • term
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    term                go to state 81
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 55
+
+   15 pipeline_statement: expression SEMICOLON •
+
+    $default  reduce using rule 15 (pipeline_statement)
+
+
+State 56
+
+   49 for_statement: range_expression PIPE • FOR EACH LBRACE statements_block RBRACE SEMICOLON
+
+    FOR  shift, and go to state 82
+
+
+State 57
+
+   14 assignment_statement: IDENTIFIER ASSIGN expression • SEMICOLON
+   18 expression: expression • PLUS term
+   19           | expression • MINUS term
+   20           | expression • MULTIPLY term
+   21           | expression • DIVIDE term
+   22           | expression • EQ term
+   23           | expression • NEQ term
+   24           | expression • LT term
+   25           | expression • GT term
+   26           | expression • AND_OP term
+   27           | expression • OR_OP term
+   29           | expression • PIPE function_call_like
+
+    PIPE       shift, and go to state 44
+    PLUS       shift, and go to state 45
+    MINUS      shift, and go to state 46
+    MULTIPLY   shift, and go to state 47
+    DIVIDE     shift, and go to state 48
+    EQ         shift, and go to state 49
+    NEQ        shift, and go to state 50
+    LT         shift, and go to state 51
+    GT         shift, and go to state 52
+    AND_OP     shift, and go to state 53
+    OR_OP      shift, and go to state 54
+    SEMICOLON  shift, and go to state 83
+
+
+State 58
+
+   18 expression: expression • PLUS term
+   19           | expression • MINUS term
+   20           | expression • MULTIPLY term
+   21           | expression • DIVIDE term
+   22           | expression • EQ term
+   23           | expression • NEQ term
+   24           | expression • LT term
+   25           | expression • GT term
+   26           | expression • AND_OP term
+   27           | expression • OR_OP term
+   29           | expression • PIPE function_call_like
+   42 arg_list: expression •
+   43         | expression • COMMA arg_list
+
+    PIPE      shift, and go to state 44
+    PLUS      shift, and go to state 45
+    MINUS     shift, and go to state 46
+    MULTIPLY  shift, and go to state 47
+    DIVIDE    shift, and go to state 48
+    EQ        shift, and go to state 49
+    NEQ       shift, and go to state 50
+    LT        shift, and go to state 51
+    GT        shift, and go to state 52
+    AND_OP    shift, and go to state 53
+    OR_OP     shift, and go to state 54
+    COMMA     shift, and go to state 84
+
+    $default  reduce using rule 42 (arg_list)
+
+
+State 59
+
+   35 function_call_like: IDENTIFIER LPAREN opt_arg_list • RPAREN
+
+    RPAREN  shift, and go to state 85
+
+
+State 60
+
+   41 opt_arg_list: arg_list •
+
+    $default  reduce using rule 41 (opt_arg_list)
+
+
+State 61
+
+   51 function_definition: FUNC IDENTIFIER LPAREN • opt_parameter_list RPAREN LBRACE statements_block RBRACE
+
+    IDENTIFIER  shift, and go to state 86
+
+    $default  reduce using rule 52 (opt_parameter_list)
+
+    opt_parameter_list  go to state 87
+    parameter_list      go to state 88
+    formal_param        go to state 89
+
+
+State 62
+
+   57 return_statement: RETURN expression SEMICOLON •
+
+    $default  reduce using rule 57 (return_statement)
+
+
+State 63
+
+   46 if_statement: IF expression LBRACE • statements_block RBRACE opt_else_clause
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 2
+    RETURN          shift, and go to state 4
+    IF              shift, and go to state 5
+    RANGE_KEYWORD   shift, and go to state 6
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    SEMICOLON       shift, and go to state 10
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    $default  reduce using rule 44 (statements_block)
+
+    statement             go to state 90
+    assignment_statement  go to state 17
+    pipeline_statement    go to state 18
+    expression_statement  go to state 19
+    expression            go to state 20
+    term                  go to state 21
+    factor                go to state 22
+    function_call_like    go to state 23
+    statements_block      go to state 91
+    if_statement          go to state 24
+    for_statement         go to state 25
+    range_expression      go to state 26
+    return_statement      go to state 28
+
+
+State 64
+
+   18 expression: expression • PLUS term
+   19           | expression • MINUS term
+   20           | expression • MULTIPLY term
+   21           | expression • DIVIDE term
+   22           | expression • EQ term
+   23           | expression • NEQ term
+   24           | expression • LT term
+   25           | expression • GT term
+   26           | expression • AND_OP term
+   27           | expression • OR_OP term
+   29           | expression • PIPE function_call_like
+   50 range_expression: RANGE_KEYWORD LPAREN expression • COMMA expression RPAREN
+
+    PIPE      shift, and go to state 44
+    PLUS      shift, and go to state 45
+    MINUS     shift, and go to state 46
+    MULTIPLY  shift, and go to state 47
+    DIVIDE    shift, and go to state 48
+    EQ        shift, and go to state 49
+    NEQ       shift, and go to state 50
+    LT        shift, and go to state 51
+    GT        shift, and go to state 52
+    AND_OP    shift, and go to state 53
+    OR_OP     shift, and go to state 54
+    COMMA     shift, and go to state 92
+
+
+State 65
+
+   39 function_call_like: PRINT LPAREN RPAREN •
+
+    $default  reduce using rule 39 (function_call_like)
+
+
+State 66
+
+   18 expression: expression • PLUS term
+   19           | expression • MINUS term
+   20           | expression • MULTIPLY term
+   21           | expression • DIVIDE term
+   22           | expression • EQ term
+   23           | expression • NEQ term
+   24           | expression • LT term
+   25           | expression • GT term
+   26           | expression • AND_OP term
+   27           | expression • OR_OP term
+   29           | expression • PIPE function_call_like
+   38 function_call_like: PRINT LPAREN expression • RPAREN
+
+    PIPE      shift, and go to state 44
+    PLUS      shift, and go to state 45
+    MINUS     shift, and go to state 46
+    MULTIPLY  shift, and go to state 47
+    DIVIDE    shift, and go to state 48
+    EQ        shift, and go to state 49
+    NEQ       shift, and go to state 50
+    LT        shift, and go to state 51
+    GT        shift, and go to state 52
+    AND_OP    shift, and go to state 53
+    OR_OP     shift, and go to state 54
+    RPAREN    shift, and go to state 93
+
+
+State 67
+
+   33 factor: LPAREN expression RPAREN •
+
+    $default  reduce using rule 33 (factor)
+
+
+State 68
+
+   36 function_call_like: BUILTIN_DOUBLE LPAREN RPAREN •
+
+    $default  reduce using rule 36 (function_call_like)
+
+
+State 69
+
+   18 expression: expression • PLUS term
+   19           | expression • MINUS term
+   20           | expression • MULTIPLY term
+   21           | expression • DIVIDE term
+   22           | expression • EQ term
+   23           | expression • NEQ term
+   24           | expression • LT term
+   25           | expression • GT term
+   26           | expression • AND_OP term
+   27           | expression • OR_OP term
+   29           | expression • PIPE function_call_like
+   37 function_call_like: BUILTIN_ADD LPAREN expression • RPAREN
+
+    PIPE      shift, and go to state 44
+    PLUS      shift, and go to state 45
+    MINUS     shift, and go to state 46
+    MULTIPLY  shift, and go to state 47
+    DIVIDE    shift, and go to state 48
+    EQ        shift, and go to state 49
+    NEQ       shift, and go to state 50
+    LT        shift, and go to state 51
+    GT        shift, and go to state 52
+    AND_OP    shift, and go to state 53
+    OR_OP     shift, and go to state 54
+    RPAREN    shift, and go to state 94
+
+
+State 70
+
+   35 function_call_like: IDENTIFIER • LPAREN opt_arg_list RPAREN
+
+    LPAREN  shift, and go to state 30
+
+
+State 71
+
+   29 expression: expression PIPE function_call_like •
+
+    $default  reduce using rule 29 (expression)
+
+
+State 72
+
+   18 expression: expression PLUS term •
+
+    $default  reduce using rule 18 (expression)
+
+
+State 73
+
+   19 expression: expression MINUS term •
+
+    $default  reduce using rule 19 (expression)
+
+
+State 74
+
+   20 expression: expression MULTIPLY term •
+
+    $default  reduce using rule 20 (expression)
+
+
+State 75
+
+   21 expression: expression DIVIDE term •
+
+    $default  reduce using rule 21 (expression)
+
+
+State 76
+
+   22 expression: expression EQ term •
+
+    $default  reduce using rule 22 (expression)
+
+
+State 77
+
+   23 expression: expression NEQ term •
+
+    $default  reduce using rule 23 (expression)
+
+
+State 78
+
+   24 expression: expression LT term •
+
+    $default  reduce using rule 24 (expression)
+
+
+State 79
+
+   25 expression: expression GT term •
+
+    $default  reduce using rule 25 (expression)
+
+
+State 80
+
+   26 expression: expression AND_OP term •
+
+    $default  reduce using rule 26 (expression)
+
+
+State 81
+
+   27 expression: expression OR_OP term •
+
+    $default  reduce using rule 27 (expression)
+
+
+State 82
+
+   49 for_statement: range_expression PIPE FOR • EACH LBRACE statements_block RBRACE SEMICOLON
+
+    EACH  shift, and go to state 95
+
+
+State 83
+
+   14 assignment_statement: IDENTIFIER ASSIGN expression SEMICOLON •
+
+    $default  reduce using rule 14 (assignment_statement)
+
+
+State 84
+
+   43 arg_list: expression COMMA • arg_list
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    expression          go to state 58
+    term                go to state 21
+    factor              go to state 22
+    function_call_like  go to state 23
+    arg_list            go to state 96
+
+
+State 85
+
+   35 function_call_like: IDENTIFIER LPAREN opt_arg_list RPAREN •
+
+    $default  reduce using rule 35 (function_call_like)
+
+
+State 86
+
+   56 formal_param: IDENTIFIER •
+
+    $default  reduce using rule 56 (formal_param)
+
+
+State 87
+
+   51 function_definition: FUNC IDENTIFIER LPAREN opt_parameter_list • RPAREN LBRACE statements_block RBRACE
+
+    RPAREN  shift, and go to state 97
+
+
+State 88
+
+   53 opt_parameter_list: parameter_list •
+
+    $default  reduce using rule 53 (opt_parameter_list)
+
+
+State 89
+
+   54 parameter_list: formal_param •
+   55               | formal_param • COMMA parameter_list
+
+    COMMA  shift, and go to state 98
+
+    $default  reduce using rule 54 (parameter_list)
+
+
+State 90
+
+   45 statements_block: statement • statements_block
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 2
+    RETURN          shift, and go to state 4
+    IF              shift, and go to state 5
+    RANGE_KEYWORD   shift, and go to state 6
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    SEMICOLON       shift, and go to state 10
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    $default  reduce using rule 44 (statements_block)
+
+    statement             go to state 90
+    assignment_statement  go to state 17
+    pipeline_statement    go to state 18
+    expression_statement  go to state 19
+    expression            go to state 20
+    term                  go to state 21
+    factor                go to state 22
+    function_call_like    go to state 23
+    statements_block      go to state 99
+    if_statement          go to state 24
+    for_statement         go to state 25
+    range_expression      go to state 26
+    return_statement      go to state 28
+
+
+State 91
+
+   46 if_statement: IF expression LBRACE statements_block • RBRACE opt_else_clause
+
+    RBRACE  shift, and go to state 100
+
+
+State 92
+
+   50 range_expression: RANGE_KEYWORD LPAREN expression COMMA • expression RPAREN
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 32
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    expression          go to state 101
+    term                go to state 21
+    factor              go to state 22
+    function_call_like  go to state 23
+
+
+State 93
+
+   38 function_call_like: PRINT LPAREN expression RPAREN •
+
+    $default  reduce using rule 38 (function_call_like)
+
+
+State 94
+
+   37 function_call_like: BUILTIN_ADD LPAREN expression RPAREN •
+
+    $default  reduce using rule 37 (function_call_like)
+
+
+State 95
+
+   49 for_statement: range_expression PIPE FOR EACH • LBRACE statements_block RBRACE SEMICOLON
+
+    LBRACE  shift, and go to state 102
+
+
+State 96
+
+   43 arg_list: expression COMMA arg_list •
+
+    $default  reduce using rule 43 (arg_list)
+
+
+State 97
+
+   51 function_definition: FUNC IDENTIFIER LPAREN opt_parameter_list RPAREN • LBRACE statements_block RBRACE
+
+    LBRACE  shift, and go to state 103
+
+
+State 98
+
+   55 parameter_list: formal_param COMMA • parameter_list
+
+    IDENTIFIER  shift, and go to state 86
+
+    parameter_list  go to state 104
+    formal_param    go to state 89
+
+
+State 99
+
+   45 statements_block: statement statements_block •
+
+    $default  reduce using rule 45 (statements_block)
+
+
+State 100
+
+   46 if_statement: IF expression LBRACE statements_block RBRACE • opt_else_clause
+
+    ELSE  shift, and go to state 105
+
+    $default  reduce using rule 47 (opt_else_clause)
+
+    opt_else_clause  go to state 106
+
+
+State 101
+
+   18 expression: expression • PLUS term
+   19           | expression • MINUS term
+   20           | expression • MULTIPLY term
+   21           | expression • DIVIDE term
+   22           | expression • EQ term
+   23           | expression • NEQ term
+   24           | expression • LT term
+   25           | expression • GT term
+   26           | expression • AND_OP term
+   27           | expression • OR_OP term
+   29           | expression • PIPE function_call_like
+   50 range_expression: RANGE_KEYWORD LPAREN expression COMMA expression • RPAREN
+
+    PIPE      shift, and go to state 44
+    PLUS      shift, and go to state 45
+    MINUS     shift, and go to state 46
+    MULTIPLY  shift, and go to state 47
+    DIVIDE    shift, and go to state 48
+    EQ        shift, and go to state 49
+    NEQ       shift, and go to state 50
+    LT        shift, and go to state 51
+    GT        shift, and go to state 52
+    AND_OP    shift, and go to state 53
+    OR_OP     shift, and go to state 54
+    RPAREN    shift, and go to state 107
+
+
+State 102
+
+   49 for_statement: range_expression PIPE FOR EACH LBRACE • statements_block RBRACE SEMICOLON
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 2
+    RETURN          shift, and go to state 4
+    IF              shift, and go to state 5
+    RANGE_KEYWORD   shift, and go to state 6
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    SEMICOLON       shift, and go to state 10
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    $default  reduce using rule 44 (statements_block)
+
+    statement             go to state 90
+    assignment_statement  go to state 17
+    pipeline_statement    go to state 18
+    expression_statement  go to state 19
+    expression            go to state 20
+    term                  go to state 21
+    factor                go to state 22
+    function_call_like    go to state 23
+    statements_block      go to state 108
+    if_statement          go to state 24
+    for_statement         go to state 25
+    range_expression      go to state 26
+    return_statement      go to state 28
+
+
+State 103
+
+   51 function_definition: FUNC IDENTIFIER LPAREN opt_parameter_list RPAREN LBRACE • statements_block RBRACE
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 2
+    RETURN          shift, and go to state 4
+    IF              shift, and go to state 5
+    RANGE_KEYWORD   shift, and go to state 6
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    SEMICOLON       shift, and go to state 10
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    $default  reduce using rule 44 (statements_block)
+
+    statement             go to state 90
+    assignment_statement  go to state 17
+    pipeline_statement    go to state 18
+    expression_statement  go to state 19
+    expression            go to state 20
+    term                  go to state 21
+    factor                go to state 22
+    function_call_like    go to state 23
+    statements_block      go to state 109
+    if_statement          go to state 24
+    for_statement         go to state 25
+    range_expression      go to state 26
+    return_statement      go to state 28
+
+
+State 104
+
+   55 parameter_list: formal_param COMMA parameter_list •
+
+    $default  reduce using rule 55 (parameter_list)
+
+
+State 105
+
+   48 opt_else_clause: ELSE • LBRACE statements_block RBRACE
+
+    LBRACE  shift, and go to state 110
+
+
+State 106
+
+   46 if_statement: IF expression LBRACE statements_block RBRACE opt_else_clause •
+
+    $default  reduce using rule 46 (if_statement)
+
+
+State 107
+
+   50 range_expression: RANGE_KEYWORD LPAREN expression COMMA expression RPAREN •
+
+    $default  reduce using rule 50 (range_expression)
+
+
+State 108
+
+   49 for_statement: range_expression PIPE FOR EACH LBRACE statements_block • RBRACE SEMICOLON
+
+    RBRACE  shift, and go to state 111
+
+
+State 109
+
+   51 function_definition: FUNC IDENTIFIER LPAREN opt_parameter_list RPAREN LBRACE statements_block • RBRACE
+
+    RBRACE  shift, and go to state 112
+
+
+State 110
+
+   48 opt_else_clause: ELSE LBRACE • statements_block RBRACE
+
+    NUMBER          shift, and go to state 1
+    IDENTIFIER      shift, and go to state 2
+    RETURN          shift, and go to state 4
+    IF              shift, and go to state 5
+    RANGE_KEYWORD   shift, and go to state 6
+    PRINT           shift, and go to state 7
+    NOT             shift, and go to state 8
+    LPAREN          shift, and go to state 9
+    SEMICOLON       shift, and go to state 10
+    BUILTIN_DOUBLE  shift, and go to state 11
+    BUILTIN_ADD     shift, and go to state 12
+
+    $default  reduce using rule 44 (statements_block)
+
+    statement             go to state 90
+    assignment_statement  go to state 17
+    pipeline_statement    go to state 18
+    expression_statement  go to state 19
+    expression            go to state 20
+    term                  go to state 21
+    factor                go to state 22
+    function_call_like    go to state 23
+    statements_block      go to state 113
+    if_statement          go to state 24
+    for_statement         go to state 25
+    range_expression      go to state 26
+    return_statement      go to state 28
+
+
+State 111
+
+   49 for_statement: range_expression PIPE FOR EACH LBRACE statements_block RBRACE • SEMICOLON
+
+    SEMICOLON  shift, and go to state 114
+
+
+State 112
+
+   51 function_definition: FUNC IDENTIFIER LPAREN opt_parameter_list RPAREN LBRACE statements_block RBRACE •
+
+    $default  reduce using rule 51 (function_definition)
+
+
+State 113
+
+   48 opt_else_clause: ELSE LBRACE statements_block • RBRACE
+
+    RBRACE  shift, and go to state 115
+
+
+State 114
+
+   49 for_statement: range_expression PIPE FOR EACH LBRACE statements_block RBRACE SEMICOLON •
+
+    $default  reduce using rule 49 (for_statement)
+
+
+State 115
+
+   48 opt_else_clause: ELSE LBRACE statements_block RBRACE •
+
+    $default  reduce using rule 48 (opt_else_clause)

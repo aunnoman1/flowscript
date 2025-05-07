@@ -205,7 +205,7 @@ void yyerror(const char *s) {
 }
 
 // Main function updated to use AST
-int main(void) {
+int parser_main_old(void) {
     printf("Starting parse...\n");
     if (yyparse() == 0) {
         printf("Parse successful!\n");

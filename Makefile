@@ -9,7 +9,7 @@ TARGET = flowscript_compiler
 
 # Source files
 # Manually listed C source files
-C_FILES = ast.c codegen.c
+C_FILES = ast.c codegen.c flowscript_compiler.c
 # Generated C source files (names are conventional)
 GEN_C_FILES = lex.yy.c flowscript.tab.c
 
@@ -76,6 +76,9 @@ lex.yy.o: lex.yy.c flowscript.tab.h ast.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 flowscript.tab.o: flowscript.tab.c flowscript.tab.h ast.h codegen.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+flowscript_compiler.o: flowscript_compiler.c ast.h codegen.h flowscript.tab.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 # --- Targets for compiling and running FlowScript test file ---
